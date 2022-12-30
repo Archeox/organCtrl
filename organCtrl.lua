@@ -1,7 +1,7 @@
 -- Plays a midi file on the organ
-local midi = require "midi"
-local rednetWrk = require "rednetWrk"
-local midiWrk = require "midiWrk"
+local midi = require "lib/midi"
+local rednetWrk = require "lib/rednetWrk"
+local midiWrk = require "lib/midiWrk"
 
 -- the path to the file
 local file = arg[1]

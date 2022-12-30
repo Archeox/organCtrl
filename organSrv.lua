@@ -14,5 +14,8 @@ local hostname = "organ_" .. octave .. "_" .. fraction
 print("Listening for " .. PROTOCOL .. " as " .. hostname)
 rednet.open(SIDE)
 rednet.host(PROTOCOL, hostname)
-local id, midi = rednet.receive(PROTOCOL)
-redstone.setOutput(midi["side"], midi["state"])
+
+while true do
+    local id, midi = rednet.receive(PROTOCOL)
+    redstone.setOutput(midi["side"], midi["state"])
+end
