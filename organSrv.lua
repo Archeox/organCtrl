@@ -2,6 +2,7 @@
 -- A simple server that manages redstones signal via rednet
 -- --------------------------------------------------------
 PROTOCOL = "organCtrl"
+SIDE = "back"
 
 -- The octave we are listening for
 local octave = arg[1]
@@ -11,6 +12,7 @@ local fraction = arg[2]
 local hostname = "organ_" .. octave .. "_" .. fraction
 -- Listen for messages
 print("Listening for " .. PROTOCOL .. " as " .. hostname)
+rednet.open(SIDE)
 rednet.host(hostname, PROTOCOL)
 local id, midi = rednet.receive(PROTOCOL)
 redstone.setOutput(midi["side"], midi["state"])
