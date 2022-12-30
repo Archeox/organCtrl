@@ -113,7 +113,7 @@ local metaEvents = {
   [0x54] = makeForwarder("smpteOffset"),
   [0x58] = function(data, callback)
     local numerator, denominator, metronome, dotted = (">I1I1I1I1"):unpack(data)
-    callback("timeSignature", numerator, 1 << denominator, metronome, dotted)
+    callback("timeSignature", numerator, numberlua.BIT.lshift(1, denominator), metronome, dotted)
   end,
   [0x59] = function(data, callback)
     local count, minor = (">I1I1"):unpack(data)
@@ -186,7 +186,7 @@ local function processEvent(stream, callback, runningStatus)
 
 
   if status >= 0x80 and status < 0xF0 then
-    length = length + midiEvent[numberlua.BIT.band(status, 0xF0)](stream, callback, numberlua.BIT.band(status & 0x0F) + 1, firstByte)
+    length = length + midiEvent[numberlua.BIT.band(status, 0xF0)](stream, callback, numberlua.BIT.band(status, 0x0F) + 1, firstByte)
   elseif status == 0xF0 then
     length = length + sysexEvent(stream, callback, firstByte)
   elseif status == 0xF2 then
