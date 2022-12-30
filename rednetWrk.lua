@@ -79,3 +79,8 @@ local function playNote(note, state)
         print("Unplayable note " .. playNote)
     end
 end
+
+return {
+    init = init,
+    playNote = playNote
+}
