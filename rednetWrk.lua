@@ -14,7 +14,7 @@ local function discoverCtrl(hostanme)
         OrganCtrlIds[hostanme] = id
     else
         print("Hostname " .. hostanme .. " wasn't found, dying")
-        exit()
+        os.exit()
     end
 end
 
