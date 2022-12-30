@@ -10,7 +10,7 @@ local function discoverCtrl(hostanme)
     -- search the network for the given hostname
     local id = rednet.lookup(PROTOCOL, hostanme);
     if id ~= nil then
-        print("Found " .. hostanme .. "on id " .. id)
+        print("Found " .. hostanme .. " on id " .. id)
         OrganCtrlIds[hostanme] = id
     else
         print("Hostname " .. hostanme .. " wasn't found, dying")
@@ -38,11 +38,11 @@ end
 local function noteToSide(note, base)
     local side = "bottom"
     if (note - base) == 0 then
-        side = "left"
-    elseif (note - base) == 1 then
-        side = "back"
-    elseif (note - base) == 2 then
         side = "right"
+    elseif (note - base) == 1 then
+        side = "front"
+    elseif (note - base) == 2 then
+        side = "left"
     elseif (note - base) == 3 then
         side = "top"
     end
