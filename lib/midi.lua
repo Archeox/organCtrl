@@ -21,8 +21,8 @@ local function readVLQ(stream)
   local length = 0
   repeat
     local byte = assert(stream:read(1), "incomplete or missing variable length quantity"):byte()
-    value = numberlua.BIT.lshift(value, 7)
-    value = numberlua.BIT.bor(value, numberlua.BIT.band(byte, 0x7F))
+    value = numberlua.lshift(value, 7)
+    value = numberlua.bor(value, numberlua.band(byte, 0x7F))
     length = length + 1
   until byte < 0x80
   return value, length
@@ -65,7 +65,7 @@ local midiEvent = {
   end,
   [0xE0] = function(stream, callback, channel, fb)
     local lsb, msb = ("I1I1"):unpack(fb .. stream:read(1))
-    callback("pitch", channel, (numberlua.BIT.bor(lsb, numberlua.BIT.lshift(msb, 7))) / 0x2000 - 1)
+    callback("pitch", channel, (numberlua.bor(lsb, numberlua.lshift(msb, 7))) / 0x2000 - 1)
     return 2
   end
 }
@@ -113,7 +113,7 @@ local metaEvents = {
   [0x54] = makeForwarder("smpteOffset"),
   [0x58] = function(data, callback)
     local numerator, denominator, metronome, dotted = (">I1I1I1I1"):unpack(data)
-    callback("timeSignature", numerator, numberlua.BIT.lshift(1, denominator), metronome, dotted)
+    callback("timeSignature", numerator, numberlua.lshift(1, denominator), metronome, dotted)
   end,
   [0x59] = function(data, callback)
     local count, minor = (">I1I1"):unpack(data)
@@ -186,7 +186,7 @@ local function processEvent(stream, callback, runningStatus)
 
 
   if status >= 0x80 and status < 0xF0 then
-    length = length + midiEvent[numberlua.BIT.band(status, 0xF0)](stream, callback, numberlua.BIT.band(status, 0x0F) + 1, firstByte)
+    length = length + midiEvent[numberlua.band(status, 0xF0)](stream, callback, numberlua.band(status, 0x0F) + 1, firstByte)
   elseif status == 0xF0 then
     length = length + sysexEvent(stream, callback, firstByte)
   elseif status == 0xF2 then
